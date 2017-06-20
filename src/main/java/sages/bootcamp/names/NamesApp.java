@@ -12,7 +12,7 @@ public class NamesApp {
         .createNamesProperties("application.properties");
 
     List<String> names = namesReader.read(namesProperties.getNamesFile());
-    String joinedNames = namesJoiner.join(names);
+    String joinedNames = namesJoiner.join(names, namesProperties.getNamesSeparator());
 
     // wypisywanie
     System.out.println(joinedNames);

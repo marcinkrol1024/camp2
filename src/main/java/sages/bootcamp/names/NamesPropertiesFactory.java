@@ -15,6 +15,7 @@ public class NamesPropertiesFactory {
             .openStream()
     );
     String namesFile = properties.getProperty("names.files.path");
-    return new NamesProperties(namesFile);
+    String namesSeparator = properties.getProperty("names.separator");
+    return new NamesProperties(namesFile, namesSeparator);
   }
 }

@@ -7,9 +7,15 @@ import java.io.IOException;
 public class NamesProperties {
 
   private final String namesFile;
+  private final String namesSeparator;
 
-  public NamesProperties(String namesFile) throws IOException {
+  public NamesProperties(String namesFile, String namesSeparator) throws IOException {
     this.namesFile = namesFile;
+    this.namesSeparator = namesSeparator;
+  }
+
+  public String getNamesSeparator() {
+    return namesSeparator;
   }
 
   public String getNamesFile() {
