@@ -8,10 +8,8 @@ import java.util.List;
 
 public class NamesReader {
 
-  private final List<String> names;
-
-  public NamesReader(String namesFile) throws IOException {
-    this.names = new ArrayList<>();
+  public List<String> read(String namesFile) throws IOException {
+    List<String> names = new ArrayList<>();
     // try-with-resources
     try (BufferedReader namesReader = new BufferedReader(new FileReader(namesFile))) {
       // wczytywanie imion
@@ -20,9 +18,7 @@ public class NamesReader {
         names.add(name);
       }
     }
-  }
-
-  public List<String> getNames() {
     return names;
   }
+
 }

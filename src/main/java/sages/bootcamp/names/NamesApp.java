@@ -5,10 +5,10 @@ import java.util.List;
 
 public class NamesApp {
   public static void main(String[] args) throws IOException {
-    NamesReader namesReader = new NamesReader("names");
+    NamesReader namesReader = new NamesReader();
     NamesJoiner namesJoiner = new NamesJoiner();
 
-    List<String> names = namesReader.getNames();
+    List<String> names = namesReader.read("names");
     String joinedNames = namesJoiner.join(names);
 
     // wypisywanie
