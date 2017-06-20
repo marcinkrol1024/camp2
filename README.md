@@ -16,3 +16,8 @@ project-name/pom.xml - konfiguracja
 project-name/src/main/java - kod produkcyjny
 project-name/src/test/java - kod testowy
 project-name/target - skompilowane/wygenerowane pliki
+
+
+Maven repo
+----------
+https://mvnrepository.com/
