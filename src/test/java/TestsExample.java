@@ -8,7 +8,7 @@ public class TestsExample {
   static List<String> dataBase = new ArrayList<>();
 
   @BeforeClass
-  public void beforeClass() {
+  public static void beforeClass() {
     System.out.println("Wykonane raz przed wszystkimi testami w klasie");
     // coś wykonane raz przed wszystkimi testami w klasie
   }
