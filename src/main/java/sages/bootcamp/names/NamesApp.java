@@ -8,10 +8,15 @@ public class NamesApp {
   public static void main(String[] args) throws IOException {
     // try-with-resources
     try (BufferedReader namesReader = new BufferedReader(new FileReader("names"))) {
-      String line;
-      while ((line = namesReader.readLine()) != null) {
-        System.out.println(line);
+      String name;
+      StringBuilder namesBuilder = new StringBuilder();
+      if ((name = namesReader.readLine()) != null) {
+        namesBuilder.append(name);
       }
+      while ((name = namesReader.readLine()) != null) {
+        namesBuilder.append(", ").append(name);
+      }
+      System.out.println(namesBuilder.toString());
     }
   }
 }
