@@ -1,10 +1,17 @@
 package sages.bootcamp.names;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.List;
 
 public class NamesApp {
+
+  private final static Logger log = LoggerFactory.getLogger(NamesApp.class);
+
   public static void main(String[] args) throws IOException {
+    log.debug("Starting names app");
 
     NamesReader namesReader = new NamesReader();
     NamesJoiner namesJoiner = new NamesJoiner();
@@ -16,5 +23,7 @@ public class NamesApp {
 
     // wypisywanie
     System.out.println(joinedNames);
+
+    log.debug("Finishing names app");
   }
 }
