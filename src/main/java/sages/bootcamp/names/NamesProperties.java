@@ -1,25 +1,18 @@
 package sages.bootcamp.names;
 
-import com.google.common.io.Resources;
-
 import java.io.IOException;
-import java.util.Properties;
 
+// mówimy, że to jest POJO, bo ma tylko pola i gettery/settery
+// co więcej jest immutable
 public class NamesProperties {
 
-  private final Properties properties;
+  private final String namesFile;
 
-  public NamesProperties(String propertiesFile) throws IOException {
-    properties = new Properties();
-    properties.load(
-        Resources
-            .getResource(propertiesFile)
-            .openStream()
-    );
+  public NamesProperties(String namesFile) throws IOException {
+    this.namesFile = namesFile;
   }
 
-
   public String getNamesFile() {
-    return properties.getProperty("names.files.path");
+    return namesFile;
   }
 }

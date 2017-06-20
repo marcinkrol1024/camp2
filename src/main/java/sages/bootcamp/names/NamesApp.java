@@ -8,7 +8,8 @@ public class NamesApp {
 
     NamesReader namesReader = new NamesReader();
     NamesJoiner namesJoiner = new NamesJoiner();
-    NamesProperties namesProperties = new NamesProperties("application.properties");
+    NamesProperties namesProperties = new NamesPropertiesFactory()
+        .createNamesProperties("application.properties");
 
     List<String> names = namesReader.read(namesProperties.getNamesFile());
     String joinedNames = namesJoiner.join(names);
