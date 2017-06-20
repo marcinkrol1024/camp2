@@ -16,6 +16,9 @@ public class NamesPropertiesFactory {
     );
     String namesFile = properties.getProperty("names.files.path");
     String namesSeparator = properties.getProperty("names.separator");
-    return new NamesProperties(namesFile, namesSeparator);
+    return new NamesPropertiesBuilder()
+        .setNamesFile(namesFile)
+        .setNamesSeparator(namesSeparator)
+        .createNamesProperties();
   }
 }
