@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class NamesPropertiesFactory {
-  NamesProperties createNamesProperties(String propertiesFile) throws IOException {
+  public NamesProperties createNamesProperties(String propertiesFile) throws IOException {
     Properties properties;
     properties = new Properties();
     properties.load(
