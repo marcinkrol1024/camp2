@@ -3,7 +3,9 @@ package sages.bootcamp.names;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NamesFacade {
@@ -21,14 +23,15 @@ public class NamesFacade {
   }
 
   public String constructJoinedNames() {
-    NamesReader namesReader = new NamesReader();
-    NamesJoiner namesJoiner = new NamesJoiner();
-
-    List<String> names = null;
+    List<String> names = new ArrayList<>();
     try {
       names = namesReader.read(namesProperties.getNamesFile());
+    } catch (InvalidFileNameException e) {
+      log.error("Invalid file name", e);
+    } catch (FileNotFoundException e) {
+      log.error("File not found", e);
     } catch (IOException e) {
-      log.error("Failed to load names file.", e);
+      log.error("Problem when reading", e);
     }
     return namesJoiner.join(names, namesProperties.getNamesSeparator());
   }
