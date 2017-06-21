@@ -16,7 +16,6 @@ import static org.mockito.Mockito.when;
 
 public class NamesFacadeSpec {
 
-  // joiner używa separatora z properties
   // używa readera do wczytania imion
   // używa joinera do połączenia imion
   @Test
@@ -51,6 +50,29 @@ public class NamesFacadeSpec {
     assertEquals(expectedJoinedNames, actualJoinedNames);
   }
 
+  // joiner używa separatora z properties
+  @Test
+  public void shouldUseSeparatorFromPropertiesForJoiner() throws IOException, InvalidFileNameException {
+    // given
+    String separator = "some-separator";
+    NamesProperties namesProperties = mock(NamesProperties.class);
+    when(namesProperties.getNamesSeparator()).thenReturn(separator);
+
+    NamesJoiner namesJoiner = mock(NamesJoiner.class);
+
+    NamesFacade namesFacade = new NamesFacade(
+        namesProperties,
+        namesJoiner,
+        mock(NamesReader.class)
+    );
+
+    // when
+    namesFacade.constructJoinedNames();
+
+    // then
+    verify(namesJoiner).join(any(), eq(separator));
+  }
+
   // reader używa nazwy pliku z properties
   @Test
   public void shouldUseFileNameFromPropertiesForReader() throws IOException, InvalidFileNameException {
@@ -59,17 +81,19 @@ public class NamesFacadeSpec {
     NamesProperties namesProperties = mock(NamesProperties.class);
     when(namesProperties.getNamesFile()).thenReturn(fileName);
 
+    NamesReader namesReader = mock(NamesReader.class);
+
     NamesFacade namesFacade = new NamesFacade(
         namesProperties,
         mock(NamesJoiner.class),
-        mock(NamesReader.class)
+        namesReader
     );
 
     // when
     namesFacade.constructJoinedNames();
 
     // then
-    verify(mock(NamesReader.class)).read(fileName);
+    verify(namesReader).read(fileName);
   }
 
   // jeśli reader zfailuje, to do joinera przekazana jest pusta lista
