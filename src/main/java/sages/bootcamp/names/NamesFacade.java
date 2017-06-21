@@ -22,10 +22,16 @@ public class NamesFacade {
     this.namesReader = namesReader;
   }
 
+  // używa readera do wczytania imion
+  // używa joinera do połączenia imion
+  // zwraca wartość domyślną, jeśli reader zfailuje
   public String constructJoinedNames() {
+    String namesFile = namesProperties.getNamesFile();
+    String namesSeparator = namesProperties.getNamesSeparator();
+
     List<String> names = new ArrayList<>();
     try {
-      names = namesReader.read(namesProperties.getNamesFile());
+      names = namesReader.read(namesFile);
     } catch (InvalidFileNameException e) {
       log.error("Invalid file name", e);
     } catch (FileNotFoundException e) {
@@ -33,6 +39,6 @@ public class NamesFacade {
     } catch (IOException e) {
       log.error("Problem when reading", e);
     }
-    return namesJoiner.join(names, namesProperties.getNamesSeparator());
+    return namesJoiner.join(names, namesSeparator);
   }
 }
