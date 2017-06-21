@@ -16,38 +16,48 @@ import static org.mockito.Mockito.when;
 
 public class NamesFacadeSpec {
 
-  // używa readera do wczytania imion
   // używa joinera do połączenia imion
   @Test
   public void shouldMockito() throws IOException, InvalidFileNameException {
     // given
-    String fileName = "some-file";
-    String separator = "some-separator";
-    NamesProperties namesProperties = mock(NamesProperties.class);
-    when(namesProperties.getNamesFile()).thenReturn(fileName);
-    when(namesProperties.getNamesSeparator()).thenReturn(separator);
-
-    List<String> names = mock(List.class);
-    NamesReader namesReader = mock(NamesReader.class);
-    when(namesReader.read(fileName)).thenReturn(names);
-
     String expectedJoinedNames = "some-joined-names";
     NamesJoiner namesJoiner = mock(NamesJoiner.class);
-    when(namesJoiner.join(names, separator)).thenReturn(expectedJoinedNames);
+    when(namesJoiner.join(any(), any())).thenReturn(expectedJoinedNames);
 
     NamesFacade namesFacade = new NamesFacade(
-        namesProperties,
+        mock(NamesProperties.class),
         namesJoiner,
-        namesReader
+        mock(NamesReader.class)
     );
 
     // when
     String actualJoinedNames = namesFacade.constructJoinedNames();
 
     // then
-    verify(namesReader).read(fileName);
-    verify(namesJoiner).join(names, separator);
     assertEquals(expectedJoinedNames, actualJoinedNames);
+  }
+
+  // używa readera do wczytania imion
+  @Test
+  public void shouldUseReaderToReadNames() throws IOException, InvalidFileNameException {
+    // given
+    List<String> names = mock(List.class);
+    NamesReader namesReader = mock(NamesReader.class);
+    when(namesReader.read(any())).thenReturn(names);
+
+    NamesJoiner namesJoiner = mock(NamesJoiner.class);
+
+    NamesFacade namesFacade = new NamesFacade(
+        mock(NamesProperties.class),
+        namesJoiner,
+        namesReader
+    );
+
+    // when
+    namesFacade.constructJoinedNames();
+
+    // then
+    verify(namesJoiner).join(eq(names), any());
   }
 
   // joiner używa separatora z properties
