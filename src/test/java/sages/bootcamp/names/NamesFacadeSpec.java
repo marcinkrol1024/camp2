@@ -1,9 +1,6 @@
+package sages.bootcamp.names;
+
 import org.junit.Test;
-import sages.bootcamp.names.InvalidFileNameException;
-import sages.bootcamp.names.NamesFacade;
-import sages.bootcamp.names.NamesJoiner;
-import sages.bootcamp.names.NamesProperties;
-import sages.bootcamp.names.NamesReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,22 +14,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MockitoExample {
+public class NamesFacadeSpec {
 
-  NamesProperties fakeNamesProperties = new NamesProperties("", "") {
-    @Override
-    public String getNamesSeparator() {
-      return "fake-separator";
-    }
-
-    @Override
-    public String getNamesFile() {
-      return "fake-names-file";
-    }
-  };
-
-
-  // reader używa nazwy pliku z properties
   // joiner używa separatora z properties
   // używa readera do wczytania imion
   // używa joinera do połączenia imion
@@ -68,20 +51,37 @@ public class MockitoExample {
     assertEquals(expectedJoinedNames, actualJoinedNames);
   }
 
+  // reader używa nazwy pliku z properties
+  @Test
+  public void shouldUseFileNameFromPropertiesForReader() throws IOException, InvalidFileNameException {
+    // given
+    String fileName = "some-file";
+    NamesProperties namesProperties = mock(NamesProperties.class);
+    when(namesProperties.getNamesFile()).thenReturn(fileName);
+
+    NamesFacade namesFacade = new NamesFacade(
+        namesProperties,
+        mock(NamesJoiner.class),
+        mock(NamesReader.class)
+    );
+
+    // when
+    namesFacade.constructJoinedNames();
+
+    // then
+    verify(mock(NamesReader.class)).read(fileName);
+  }
+
   // jeśli reader zfailuje, to do joinera przekazana jest pusta lista
   @Test
   public void shouldReturnEmptyListWhenReaderFails() throws IOException, InvalidFileNameException {
     // given
-    NamesProperties namesProperties = mock(NamesProperties.class);
-
     NamesReader namesReader = mock(NamesReader.class);
     when(namesReader.read(any())).thenThrow(new FileNotFoundException());
 
-    NamesJoiner namesJoiner = mock(NamesJoiner.class);
-
     NamesFacade namesFacade = new NamesFacade(
-        namesProperties,
-        namesJoiner,
+        mock(NamesProperties.class),
+        mock(NamesJoiner.class),
         namesReader
     );
 
@@ -89,6 +89,7 @@ public class MockitoExample {
     namesFacade.constructJoinedNames();
 
     // then
-    verify(namesJoiner).join(eq(new ArrayList<>()), any());
+    verify(mock(NamesJoiner.class)).join(eq(new ArrayList<>()), any());
   }
+
 }
